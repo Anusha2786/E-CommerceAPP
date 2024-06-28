@@ -3,9 +3,17 @@
     public class Products
     {
         public int Product_ID { get; set; }
-        public int Product_Name { get; set; }
+        public string Product_Name { get; set; }
         public string Product_Description { get; set; }
         public decimal Product_Price { get; set; }
-        public int Category_ID { get; set; }
+
+        // Foreign keys
+        public int Category_ID { get; set; } // Foreign key for Category
+        
+
+        // Navigation properties
+        public ICollection<Reviews> Reviews { get; set; }
+        public Categories Categories{get; set; }
+        public Customer Customers{ get; set; } // Navigation property to Customer
     }
 }
