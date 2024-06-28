@@ -17,7 +17,10 @@ namespace E_CommerceAPP.Controllers
         {
             _logger = logger;
         }
-
+        /// <summary>
+        /// GET /analytics/sales/summary
+        /// Get sales summary.
+        /// </summary>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
