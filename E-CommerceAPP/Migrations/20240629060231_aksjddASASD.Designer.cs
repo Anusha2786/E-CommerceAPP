@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceAPP.Migrations
 {
     [DbContext(typeof(EcommerceDbContext))]
-    [Migration("20240628132753_NASDHAKSHD")]
-    partial class NASDHAKSHD
+    [Migration("20240629060231_aksjddASASD")]
+    partial class aksjddASASD
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,9 +88,6 @@ namespace ECommerceAPP.Migrations
                     b.Property<int>("Category_ID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Customer_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Product_Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -106,94 +103,23 @@ namespace ECommerceAPP.Migrations
 
                     b.HasIndex("Category_ID");
 
-                    b.HasIndex("Customer_ID");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Reviews", b =>
-                {
-                    b.Property<int>("Review_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Review_ID"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Customer_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("Review_ID");
-
-                    b.HasIndex("Customer_ID");
-
-                    b.HasIndex("Product_ID");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("E_CommerceAPP.Models.Entities.Products", b =>
                 {
-                    b.HasOne("E_CommerceAPP.Models.Entities.Categories", "Category")
+                    b.HasOne("E_CommerceAPP.Models.Entities.Categories", "Categories")
                         .WithMany("Products")
                         .HasForeignKey("Category_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("E_CommerceAPP.Models.Entities.Customer", "Customer")
-                        .WithMany("Products")
-                        .HasForeignKey("Customer_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Reviews", b =>
-                {
-                    b.HasOne("E_CommerceAPP.Models.Entities.Customer", "Customer")
-                        .WithMany("Reviews")
-                        .HasForeignKey("Customer_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("E_CommerceAPP.Models.Entities.Products", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("Product_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
+                    b.Navigation("Categories");
                 });
 
             modelBuilder.Entity("E_CommerceAPP.Models.Entities.Categories", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Customer", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Products", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

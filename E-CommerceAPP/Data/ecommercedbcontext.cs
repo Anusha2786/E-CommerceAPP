@@ -13,7 +13,7 @@ namespace E_CommerceAPP.Data
 
         public DbSet<Products> Products { get; set; }
         public DbSet<Categories> Categories { get; set; }
-        public DbSet<Reviews> Reviews { get; set; }
+        
         public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -28,35 +28,31 @@ namespace E_CommerceAPP.Data
             modelBuilder.Entity<Products>()
                 .HasKey(p => p.Product_ID);
 
-            // Configure Reviews entity
-            modelBuilder.Entity<Reviews>()
-                .HasKey(r => r.Review_ID);
-
-            // Configure Customer entity
-            modelBuilder.Entity<Customer>()
-                .HasKey(c => c.Customer_ID);
-
             modelBuilder.Entity<Categories>()
                 .HasMany(c => c.Products)
                 .WithOne(p => p.Categories)
-                .HasForeignKey(p => p.Category_ID);
+                .HasForeignKey(p => p.Category_ID)
+                .OnDelete(DeleteBehavior.Restrict); // Adjust delete behavior if necessary;
 
             modelBuilder.Entity<Products>()
                 .HasOne(p => p.Categories) // Product belongs to one Category
                 .WithMany(c => c.Products) // Category has many Products
                 .HasForeignKey(p => p.Category_ID); // Foreign key constraint
+            modelBuilder.Entity<Categories>()
+              .HasMany(c => c.Products)
+              .WithOne(p => p.Categories)
+              .HasForeignKey(p => p.Category_ID)
+              .OnDelete(DeleteBehavior.Restrict); // Adjust delete behavior if necessary
 
-            // Configure relationships
-            modelBuilder.Entity<Reviews>()
-                .HasOne(r => r.Product)
-                .WithMany(p => p.Reviews)
-                .HasForeignKey(r => r.Product_ID);
+            modelBuilder.Entity<Products>()
+                .HasOne(p => p.Categories)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.Category_ID)
+                .OnDelete(DeleteBehavior.Restrict); // Adjust delete behavior if necessary
 
-            modelBuilder.Entity<Reviews>()
-                .HasOne(r => r.Customer)
-                .WithMany(c => c.Reviews)
-                .HasForeignKey(r => r.Customer_ID);
-            base.OnModelCreating(modelBuilder);
+            
+
+
         }
     }
 }

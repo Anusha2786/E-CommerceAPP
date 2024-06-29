@@ -9,11 +9,12 @@
 
         // Foreign keys
         public int Category_ID { get; set; } // Foreign key for Category
-        
+
 
         // Navigation properties
-        public ICollection<Reviews> Reviews { get; set; }
+       
+
         public Categories Categories{get; set; }
-        public Customer Customers{ get; set; } // Navigation property to Customer
+        
     }
 }

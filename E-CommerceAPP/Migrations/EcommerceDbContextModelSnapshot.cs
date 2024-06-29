@@ -85,9 +85,6 @@ namespace ECommerceAPP.Migrations
                     b.Property<int>("Category_ID")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomersCustomer_ID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Product_Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,39 +100,7 @@ namespace ECommerceAPP.Migrations
 
                     b.HasIndex("Category_ID");
 
-                    b.HasIndex("CustomersCustomer_ID");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Reviews", b =>
-                {
-                    b.Property<int>("Review_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Review_ID"));
-
-                    b.Property<string>("Comment")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Customer_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_ID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Product_Rating")
-                        .HasColumnType("int");
-
-                    b.HasKey("Review_ID");
-
-                    b.HasIndex("Customer_ID");
-
-                    b.HasIndex("Product_ID");
-
-                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("E_CommerceAPP.Models.Entities.Products", b =>
@@ -143,54 +108,15 @@ namespace ECommerceAPP.Migrations
                     b.HasOne("E_CommerceAPP.Models.Entities.Categories", "Categories")
                         .WithMany("Products")
                         .HasForeignKey("Category_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("E_CommerceAPP.Models.Entities.Customer", "Customers")
-                        .WithMany("Products")
-                        .HasForeignKey("CustomersCustomer_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Categories");
-
-                    b.Navigation("Customers");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Reviews", b =>
-                {
-                    b.HasOne("E_CommerceAPP.Models.Entities.Customer", "Customer")
-                        .WithMany("Reviews")
-                        .HasForeignKey("Customer_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("E_CommerceAPP.Models.Entities.Products", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("Product_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("E_CommerceAPP.Models.Entities.Categories", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Customer", b =>
-                {
-                    b.Navigation("Products");
-
-                    b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("E_CommerceAPP.Models.Entities.Products", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

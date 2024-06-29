@@ -69,6 +69,52 @@ namespace E_CommerceAPP.Controllers
 
             return categoryWithProducts;
         }
+        //-------------------------------------------------
+        [HttpPost]
+        public async Task<ActionResult<Categories>> PostCategory(CategoriesDTO categoryWithProducts)
+        {
+            // Validate the incoming DTO
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Create a new category entity
+            var newCategory = new Categories
+            {
+                Category_Name = categoryWithProducts.Category_Name,
+                Products = new List<Products>() // Initialize Products collection
+            };
+
+            // Add products to the new category
+            foreach (var productDTO in categoryWithProducts.Products)
+            {
+                var product = new Products
+                {
+                    Product_Name = productDTO.Product_Name,
+                    Product_Description = productDTO.Product_Description,
+                    Product_Price = productDTO.Product_Price,
+                    Category_ID = newCategory.Category_ID // Assign Category_ID to product
+                };
+
+                newCategory.Products.Add(product);
+            }
+
+            // Save changes to the database
+            categoriesdbcontext.Categories.Add(newCategory);
+            await categoriesdbcontext.SaveChangesAsync();
+
+            // Return a response with status 201 (Created)
+            // Include the newly created category in the response
+            return CreatedAtAction(nameof(GetCategory), new { id = newCategory.Category_ID }, newCategory);
+
+        }
+
+        private object GetCategory()
+        {
+            throw new NotImplementedException();
+        }
+
         //------------------------------------------------------------------------------------------------------------------------
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, UpdateonlyCategoryDTO updatedCategory)
