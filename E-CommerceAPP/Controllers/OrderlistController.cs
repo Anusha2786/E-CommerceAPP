@@ -13,7 +13,7 @@ namespace E_CommerceAPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] 
+   
     public class OrderlistController : ControllerBase
     {
         private readonly OrderDbContext _context;

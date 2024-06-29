@@ -6,10 +6,11 @@ namespace E_CommerceAPP.Models
 {
     public class Orderlist
     {
-        
+        [Key]
+        [Required]
         public int OrderlistId { get; set; }
 
-       
+        [Required]
         public string OrderStatus { get; set; }
 
         public DateTime OrderDate { get; set; }

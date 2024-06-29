@@ -18,7 +18,7 @@ namespace E_CommerceAPP.Data
                   .WithOne()                
                   .HasForeignKey<Orderlist>(o => o.AddressId);
 
-            // Configure one-to-many relationship between Orderlist and Payment
+            
             modelBuilder.Entity<Orderlist>()
                 .HasMany(o => o.Payments)
                 .WithOne()

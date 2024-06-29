@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_CommerceAPP.Migrations
 {
     [DbContext(typeof(OrderDbContext))]
-    [Migration("20240628093703_Intial")]
+    [Migration("20240629070712_Intial")]
     partial class Intial
     {
         /// <inheritdoc />
@@ -130,6 +130,7 @@ namespace E_CommerceAPP.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("amount")
+                        .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("paymentdate")
@@ -139,6 +140,7 @@ namespace E_CommerceAPP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("paymenttype")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("paymentId");

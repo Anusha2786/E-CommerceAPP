@@ -94,8 +94,8 @@ namespace E_CommerceAPP.Migrations
                 {
                     paymentId = table.Column<int>(type: "int", nullable: false),
                     paymentdate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    paymenttype = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    amount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    paymenttype = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     paymentstatus = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

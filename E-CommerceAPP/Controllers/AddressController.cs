@@ -7,13 +7,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace E_CommerceAPP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Ensure endpoint requires authorization
+ 
     public class AddressController : ControllerBase
     {
         private readonly OrderDbContext _context;
@@ -82,7 +83,7 @@ namespace E_CommerceAPP.Controllers
                 _context.addrees.Add(address);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetAddressById), new { id = address.AddressId}, address);
+                return CreatedAtAction(nameof(GetAddressById), new { id = address.AddressId }, address);
             }
             catch (DbUpdateException ex)
             {
@@ -142,7 +143,7 @@ namespace E_CommerceAPP.Controllers
                     return NotFound();
                 }
 
-                existingAddress.AddressName=address.AddressName;
+                existingAddress.AddressName = address.AddressName;
                 existingAddress.Street = address.Street;
                 existingAddress.State = address.State;
                 existingAddress.Pincode = address.Pincode;

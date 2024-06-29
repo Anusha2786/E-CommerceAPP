@@ -127,6 +127,7 @@ namespace E_CommerceAPP.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal?>("amount")
+                        .IsRequired()
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("paymentdate")
@@ -136,6 +137,7 @@ namespace E_CommerceAPP.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("paymenttype")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("paymentId");
