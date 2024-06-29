@@ -12,6 +12,8 @@ namespace E_CommerceAPP.Data
         public DbSet<Addrees> addrees { get; set; }
         public DbSet<Shipment> shipment { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
+
+
         {
             modelBuilder.Entity<Orderlist>()
                   .HasOne(o => o.Addrees)  
@@ -23,6 +25,13 @@ namespace E_CommerceAPP.Data
                 .HasMany(o => o.Payments)
                 .WithOne()
                 .HasForeignKey(p => p.paymentId);
+
+
+
+
+
+
+
 
         }
 
