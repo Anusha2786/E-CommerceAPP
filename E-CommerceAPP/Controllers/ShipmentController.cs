@@ -79,7 +79,8 @@ namespace E_CommerceAPP.Controllers
                 _context.shipment.Add(shipment);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetShipmentById), new { id = shipment.shipmentId}, shipment);
+                return CreatedAtAction(nameof(GetShipmentById), new { id = shipment.ShipmentID
+                    }, shipment);
             }
             catch (DbUpdateException ex)
             {
@@ -128,7 +129,7 @@ namespace E_CommerceAPP.Controllers
         {
             try
             {
-                if (id != shipment.shipmentId)
+                if (id != shipment.ShipmentID)
                 {
                     return BadRequest("Shipment ID mismatch.");
                 }
@@ -139,7 +140,7 @@ namespace E_CommerceAPP.Controllers
                     return NotFound();
                 }
 
-                existingShipment.shipmentdate = shipment.shipmentdate;
+                existingShipment.ShipmentDate = shipment.ShipmentDate;
               
                
 
