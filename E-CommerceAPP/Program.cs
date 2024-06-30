@@ -1,4 +1,4 @@
-using E_CommerceAPP.Data;
+﻿using E_CommerceAPP.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +7,18 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using E_CommerceAPP.Data;
 
+
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<E_CommerceAPPContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("E_CommerceAPPContext") ?? throw new InvalidOperationException("Connection string 'E_CommerceAPPContext' not found.")));
+
+
+   
 // Add services to the container.
 builder.Services.AddDbContext<OrderDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Shopping")));
 builder.Services.AddControllers();
