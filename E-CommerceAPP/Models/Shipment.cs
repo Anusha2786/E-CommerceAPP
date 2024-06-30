@@ -1,12 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_CommerceAPP.Models
 {
     public class Shipment
     {
-        [Key]   
+        [Key]
+        public int ShipmentID { get; set; }
+
         [Required]
-        public int shipmentId { get; set; }
-        public DateTime shipmentdate { get; set; }
+        public DateTime ShipmentDate { get; set; }
+
+        //Navigation property to Delivery
+        public virtual ICollection<Delivery> Deliveries { get; set; } = [];
     }
 }

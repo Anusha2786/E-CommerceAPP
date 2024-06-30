@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_CommerceAPP.Models
 {
     public class Delivery
     {
         [Key]
-        [Required]  
+        public int DeliveryID { get; set; }
+
+        [Required]
         public int DeliveryId { get; set; } 
         [Required]
         public string Status { get; set; }
