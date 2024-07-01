@@ -9,8 +9,7 @@ namespace E_CommerceAPP.Models
         [Key]
         public int DeliveryID { get; set; }
 
-        [Required]
-        public int DeliveryId { get; set; } 
+       
         [Required]
         public string Status { get; set; }
         [Required]
