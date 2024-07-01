@@ -22,12 +22,29 @@ namespace E_CommerceAPP.Controllers
             _logger = logger;
         }
         //------------------------------------------------------------------------
+        // GET: api/Categories
+        /// <summary>
+        /// Retrieves a list of all categories.
+        /// </summary>
+        /// <returns>A list of Category objects</returns>
+        /// <response code="200">Returns the list of categories</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Categories>>> GetCategories()
         {
             return await categoriesdbcontext.Categories.ToListAsync();
         }
+        // GET: api/Categories/{id}
+        /// <summary>
+        /// Retrieves a specific category by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve</param>
+        /// <returns>A single Category object</returns>
+        /// <response code="200">Returns the category with the specified ID</response>
+        /// <response code="404">If no category with the specified ID exists</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Categories>> GetCategoryById(int id)
         {
             var category = await categoriesdbcontext.Categories
@@ -43,7 +60,17 @@ namespace E_CommerceAPP.Controllers
 
         //---------------------------------------------------------------------------------------------------------------------------------------
 
+        // GET: api/Categories/{id}/products
+        /// <summary>
+        /// Retrieves products belonging to a specific category by category ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve products for</param>
+        /// <returns>A list of Product objects belonging to the category</returns>
+        /// <response code="200">Returns the list of products belonging to the category</response>
+        /// <response code="404">If no category with the specified ID exists</response>
         [HttpGet("{id}/products")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<CategoriesDTO>> GetCategoryWithProducts(int id)
         {
             var categoryWithProducts = await categoriesdbcontext.Categories
@@ -70,7 +97,17 @@ namespace E_CommerceAPP.Controllers
             return categoryWithProducts;
         }
         //-------------------------------------------------
+        // POST: api/Categories
+        /// <summary>
+        /// Creates a new category.
+        /// </summary>
+        /// <param name="category">The Category object to create</param>
+        /// <returns>The created Category object</returns>
+        /// <response code="201">Returns the newly created category</response>
+        /// <response code="400">If the request body is null or invalid</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Categories>> PostCategory(CategoriesDTO categoryWithProducts)
         {
             // Validate the incoming DTO
@@ -116,7 +153,20 @@ namespace E_CommerceAPP.Controllers
         }
 
         //------------------------------------------------------------------------------------------------------------------------
+        // PUT: api/Categories/{id}
+        /// <summary>
+        /// Updates an existing category identified by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to update</param>
+        /// <param name="category">The updated Category object</param>
+        /// <returns>The updated Category object</returns>
+        /// <response code="200">Returns the updated category</response>
+        /// <response code="400">If the request body or ID is invalid</response>
+        /// <response code="404">If no category with the specified ID exists</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCategory(int id, UpdateonlyCategoryDTO updatedCategory)
         {
             var categoryToUpdate = await categoriesdbcontext.Categories.FindAsync(id);
@@ -149,7 +199,18 @@ namespace E_CommerceAPP.Controllers
         }
         //-------------------------------------------------------------
 
+        // PUT: api/Categories/update-with-products/{id}
+        /// <summary>
+        /// Updates an existing category and its associated products identified by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to update</param>
+        /// <response code="200">Returns the updated category with its associated products</response>
+        /// <response code="400">If the request body or ID is invalid</response>
+        /// <response code="404">If no category with the specified ID exists</response>
         [HttpPut("update-with-products/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateCategory(int id, UpdatecategoryDTO updatedCategory)
         {
             // Retrieve existing category including products
@@ -222,7 +283,17 @@ namespace E_CommerceAPP.Controllers
         {
             return categoriesdbcontext.Categories.Any(e => e.Category_ID == id);
         }
+        // DELETE: api/Categories/{id}
+        /// <summary>
+        /// Deletes a category identified by ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to delete</param>
+        /// <returns>No content</returns>
+        /// <response code="204">If the category was successfully deleted</response>
+        /// <response code="404">If no category with the specified ID exists</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
             var category = await categoriesdbcontext.Categories.FindAsync(id);

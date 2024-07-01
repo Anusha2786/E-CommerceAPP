@@ -22,8 +22,13 @@ namespace E_CommerceAPP.Controllers
             this.sieveProcessor = sieveProcessor;
         }
         // GET: api/products
-
+        /// <summary>
+        /// Retrieves a list of all products.
+        /// </summary>
+        /// <returns>A list of ProductDTO objects</returns>
+        /// <response code="200">Returns the list of products</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<Products>>> GetProducts()
         {
             try
@@ -37,7 +42,17 @@ namespace E_CommerceAPP.Controllers
             }
         }
         //----------------------------------------------------------------------
+        // GET: api/products/{id}
+        /// <summary>
+        /// Retrieves a product by ID.
+        /// </summary>
+        /// <param name="id">The ID of the product to retrieve</param>
+        /// <returns>A ProductDTO object representing the product</returns>
+        /// <response code="200">Returns the product</response>
+        /// <response code="404">If no product with the specified ID exists</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Products>> GetProduct(int id)
         {
             var product = await productsdbcontext.Products
@@ -52,7 +67,16 @@ namespace E_CommerceAPP.Controllers
             return product;
         }
         //----------------------------------------------------------------------
+        // POST: api/products
+        /// <summary>
+        /// Creates a new product.
+        /// </summary>
+        
+        /// <response code="201">Returns the newly created product</response>
+        /// <response code="400">If the request body is invalid</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Products>> PostProduct(AddProductDTOwithcategory productDto)
         {
             if (!ModelState.IsValid)
@@ -86,7 +110,20 @@ namespace E_CommerceAPP.Controllers
             return CreatedAtAction("GetProduct", new { id = product.Product_ID }, product);
         }
         //--------------------------------------------------
+        // PUT: api/products/{id}
+        /// <summary>
+        /// Updates an existing product identified by ID.
+        /// </summary>
+        /// <param name="id">The ID of the product to update</param>
+        
+       
+        /// <response code="200">Returns the updated product</response>
+        /// <response code="400">If the request body or ID is invalid</response>
+        /// <response code="404">If no product with the specified ID exists</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> PutProduct(int id, ProductDTO updateDTO)
         {
             if (id != updateDTO.Product_ID)
@@ -146,7 +183,17 @@ namespace E_CommerceAPP.Controllers
         }
 
         //---------------------------------------------------------
+        // DELETE: api/products/{id}
+        /// <summary>
+        /// Deletes a product identified by ID.
+        /// </summary>
+        /// <param name="id">The ID of the product to delete</param>
+        /// <returns>No content</returns>
+        /// <response code="204">If the product was successfully deleted</response>
+        /// <response code="404">If no product with the specified ID exists</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try

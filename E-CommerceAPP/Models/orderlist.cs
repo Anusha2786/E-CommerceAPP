@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace E_CommerceAPP.Models
+namespace E_CommerceAPP.Models.Entities
 {
     public class Orderlist
     {
@@ -23,7 +23,7 @@ namespace E_CommerceAPP.Models
         public int AddressId { get; set; }
 
         // Navigation properties
-        public virtual Addrees Addrees { get; set; }  // One-to-one with Address
+        public virtual Address Address { get; set; }  // One-to-one with Address
 
         public virtual ICollection<Payment> Payments { get; set; } // One-to-many with Payment
 

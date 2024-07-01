@@ -14,15 +14,21 @@ namespace E_CommerceAPP.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        private readonly OrderDbContext _context;
+        private readonly EcommerceDbContext _context;
         private readonly ILogger<PaymentController> _logger;
 
-        public PaymentController(OrderDbContext context, ILogger<PaymentController> logger)
+        public PaymentController(EcommerceDbContext context, ILogger<PaymentController> logger)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        /// <summary>
+        /// Retrieves a list of payments.
+        /// </summary>
+        /// <returns>A list of payments.</returns>
+        /// <response code="200">Returns a list of payments.</response>
+        /// <response code="500">If there was an error while processing the request.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,6 +45,26 @@ namespace E_CommerceAPP.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error getting payments.");
             }
         }
+        /// <summary>
+        /// Creates a new payment.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /api/Payments
+        ///     {
+        ///         "amount": 100.00,
+        ///         "paymentDate": "2024-07-01T10:00:00",
+        ///         "description": "Payment for services",
+        ///         "customerId": 123
+        ///     }
+        ///     
+        /// </remarks>
+        /// <param name="payment">The payment details to create.</param>
+        /// <returns>A newly created payment.</returns>
+        /// <response code="201">Returns the newly created payment.</response>
+        /// <response code="400">If the request body is invalid or missing required fields.</response>
+        /// <response code="500">If there was an error while processing the request.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -78,6 +104,14 @@ namespace E_CommerceAPP.Controllers
 
 
 
+        /// <summary>
+        /// Retrieves a payment by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the payment to retrieve.</param>
+        /// <returns>The payment with the specified ID.</returns>
+        /// <response code="200">Returns the payment with the specified ID.</response>
+        /// <response code="404">If no payment with the given ID exists.</response>
+        /// <response code="500">If there was an error while processing the request.</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -102,6 +136,14 @@ namespace E_CommerceAPP.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes a payment by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the payment to delete.</param>
+        /// <returns>No content if the payment was successfully deleted.</returns>
+        /// <response code="200">Returns no content if the payment was successfully deleted.</response>
+        /// <response code="404">If no payment with the given ID exists.</response>
+        /// <response code="500">If there was an error while processing the request.</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -128,6 +170,16 @@ namespace E_CommerceAPP.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates a payment by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the payment to update.</param>
+        /// <param name="updatedPayment">The updated payment object.</param>
+        /// <returns>No content if the payment was successfully updated.</returns>
+        /// <response code="200">Returns no content if the payment was successfully updated.</response>
+        /// <response code="400">If the request body or parameters are invalid.</response>
+        /// <response code="404">If no payment with the given ID exists.</response>
+        /// <response code="500">If there was an error while processing the request.</response>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
