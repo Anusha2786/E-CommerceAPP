@@ -33,14 +33,31 @@ namespace E_CommerceAPP.Controllers
         {
             try
             {
-                var products = await productsdbcontext.Products.ToListAsync();
-                return Ok(products);
+                var products = await productsdbcontext.Products
+                                        .Include(p => p.Categories) // Assuming Category is a navigation property in Product entity
+                                        .ToListAsync();
+
+                // Adjust the projection to match your JSON structure if needed
+                var productsResponse = products.Select(p => new {
+                    product_ID = p.Product_ID,
+                    product_Name = p.Product_Name,
+                    product_Description = p.Product_Description,
+                    product_Price = p.Product_Price,
+                    category = new
+                    {
+                        category_ID = p.Categories.Category_ID,
+                        category_Name = p.Categories.Category_Name
+                    }
+                });
+
+                return Ok(productsResponse);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         //----------------------------------------------------------------------
         // GET: api/products/{id}
         /// <summary>
