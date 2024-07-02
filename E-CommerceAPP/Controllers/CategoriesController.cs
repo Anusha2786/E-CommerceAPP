@@ -143,14 +143,9 @@ namespace E_CommerceAPP.Controllers
 
             // Return a response with status 201 (Created)
             // Include the newly created category in the response
-            return CreatedAtAction(nameof(GetCategory), new { id = newCategory.Category_ID }, newCategory);
-
+            return CreatedAtAction(nameof(GetCategoryById), new { id = newCategory.Category_ID }, newCategory);
         }
 
-        private object GetCategory()
-        {
-            throw new NotImplementedException();
-        }
 
         //------------------------------------------------------------------------------------------------------------------------
         // PUT: api/Categories/{id}
