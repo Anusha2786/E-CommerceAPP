@@ -25,7 +25,7 @@ namespace E_CommerceAPP.Models.Entities
         // Navigation properties
         public virtual Address Address { get; set; }  // One-to-one with Address
 
-        public virtual ICollection<Payment> Payments { get; set; } // One-to-many with Payment
+      //  public virtual ICollection<Payment> Payments { get; set; } // One-to-many with Payment
 
         public virtual Shipment Shipment { get; set; } // One-to-one with Shipment
     }
