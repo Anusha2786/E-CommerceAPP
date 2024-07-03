@@ -291,7 +291,10 @@ namespace E_CommerceAPP.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var category = await categoriesdbcontext.Categories.FindAsync(id);
+            var category = await categoriesdbcontext.Categories
+                                        .Include(c => c.Products) // Include products for deletion
+                                        .FirstOrDefaultAsync(c => c.Category_ID == id);
+
             if (category == null)
             {
                 return NotFound();
@@ -299,14 +302,15 @@ namespace E_CommerceAPP.Controllers
 
             try
             {
+                // Remove all associated products
+                categoriesdbcontext.Products.RemoveRange(category.Products);
+
+                // Remove the category itself
                 categoriesdbcontext.Categories.Remove(category);
+
                 await categoriesdbcontext.SaveChangesAsync();
+
                 return NoContent(); // 204 No Content
-            }
-            catch (DbUpdateException ex)
-            {
-                // Handle specific exception for foreign key constraint (if using Restrict)
-                return BadRequest(new { error = "Cannot delete category. It has associated products." });
             }
             catch (Exception ex)
             {
