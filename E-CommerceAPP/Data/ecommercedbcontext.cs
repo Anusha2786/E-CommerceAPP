@@ -68,10 +68,10 @@ namespace E_CommerceAPP.Data
                       .HasForeignKey<Orderlist>(o => o.AddressId);
 
 
-           /*     modelBuilder.Entity<Orderlist>()
-                    .HasMany(o => o.Payments)
-                    .WithOne()
-                    .HasForeignKey(p => p.paymentId);*/
+                /*     modelBuilder.Entity<Orderlist>()
+                         .HasMany(o => o.Payments)
+                         .WithOne()
+                         .HasForeignKey(p => p.paymentId);*/
 
                
 
