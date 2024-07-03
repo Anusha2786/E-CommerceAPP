@@ -73,7 +73,7 @@ namespace E_CommerceAPP.Data
                     .WithOne()
                     .HasForeignKey(p => p.paymentId);*/
 
-                */
+               
 
             }
 

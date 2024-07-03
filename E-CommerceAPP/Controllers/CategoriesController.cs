@@ -68,33 +68,29 @@ namespace E_CommerceAPP.Controllers
         /// <returns>A list of Product objects belonging to the category</returns>
         /// <response code="200">Returns the list of products belonging to the category</response>
         /// <response code="404">If no category with the specified ID exists</response>
-        [HttpGet("{id}/products")]
+        [HttpGet("{categoryId}/products")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CategoriesDTO>> GetCategoryWithProducts(int id)
+        public async Task<ActionResult<List<ProductDTO>>> GetProductsByCategory(int categoryId)
         {
-            var categoryWithProducts = await categoriesdbcontext.Categories
-                .Where(c => c.Category_ID == id)
-                .Select(c => new CategoriesDTO
+            var products = await categoriesdbcontext.Products
+                .Where(p => p.Category_ID == categoryId)
+                .Select(p => new ProductDTO
                 {
-                    Category_ID = c.Category_ID,
-                    Category_Name = c.Category_Name,
-                    Products = c.Products.Select(p => new ProductDTO
-                    {
-                        Product_ID = p.Product_ID,
-                        Product_Name = p.Product_Name,
-                        Product_Description = p.Product_Description,
-                        Product_Price = p.Product_Price
-                    }).ToList()
+                    Product_ID = p.Product_ID,
+                    Product_Name = p.Product_Name,
+                    Product_Description = p.Product_Description,
+                    Product_Price = p.Product_Price,
+                    Category_ID = p.Category_ID
                 })
-                .FirstOrDefaultAsync();
+                .ToListAsync();
 
-            if (categoryWithProducts == null)
+            if (!products.Any())
             {
                 return NotFound();
             }
 
-            return categoryWithProducts;
+            return products;
         }
         //-------------------------------------------------
         // POST: api/Categories
