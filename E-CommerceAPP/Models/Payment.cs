@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using E_CommerceAPP.Models.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace E_CommerceAPP.Models
 {
@@ -16,6 +17,8 @@ namespace E_CommerceAPP.Models
         public decimal? amount { get; set; }
 
         public string? paymentstatus { get; set; }
-     
+        // Navigation properties
+        public virtual ICollection<Orderlist> Orderlists { get; set; }
+
     }
 }

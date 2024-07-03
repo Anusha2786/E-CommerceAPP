@@ -49,6 +49,8 @@ namespace E_CommerceAPP.Controllers
         /// </remarks>
         /// <param name="customerId">The ID of the customer whose addresses to retrieve.</param>
         /// <returns>A list of addresses associated with the specified customer ID.</returns>
+        /// 
+        /*
         [HttpGet("ByCustomerId/{customerId?}")]
         /// 
         /// <response code="200">Returns the list of addresses.</response>
@@ -75,7 +77,7 @@ namespace E_CommerceAPP.Controllers
                 return allAddresses;
             }
         }
-
+        */
         /// <summary>
         /// Retrieves a specific address by its ID.
         /// </summary>

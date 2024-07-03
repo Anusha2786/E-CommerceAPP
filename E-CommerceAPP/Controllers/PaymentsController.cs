@@ -93,14 +93,15 @@ namespace E_CommerceAPP.Controllers
             catch (DbUpdateException ex)
             {
                 _logger.LogError(ex, "Error saving payment to database. Payment ID: {PaymentId}", payment?.paymentId);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error saving payment to database.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error saving payment to database. Please try again later.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An unexpected error occurred while adding payment. Payment ID: {PaymentId}", payment?.paymentId);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred while adding payment.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An unexpected error occurred: {ex.Message}");
             }
         }
+
 
 
 

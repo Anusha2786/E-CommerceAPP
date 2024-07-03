@@ -14,12 +14,12 @@ namespace E_CommerceAPP.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly EcommerceDbContext productsdbcontext;
-        private readonly SieveProcessor sieveProcessor;
+        
         private readonly JsonSerializerOptions _jsonOptions;
-        public ProductsController(EcommerceDbContext productsdbcontext, SieveProcessor sieveProcessor)
+        public ProductsController(EcommerceDbContext productsdbcontext)
         {
             this.productsdbcontext = productsdbcontext;
-            this.sieveProcessor = sieveProcessor;
+            
         }
         // GET: api/products
         /// <summary>
@@ -33,14 +33,31 @@ namespace E_CommerceAPP.Controllers
         {
             try
             {
-                var products = await productsdbcontext.Products.ToListAsync();
-                return Ok(products);
+                var products = await productsdbcontext.Products
+                                        .Include(p => p.Categories) // Assuming Category is a navigation property in Product entity
+                                        .ToListAsync();
+
+                // Adjust the projection to match your JSON structure if needed
+                var productsResponse = products.Select(p => new {
+                    product_ID = p.Product_ID,
+                    product_Name = p.Product_Name,
+                    product_Description = p.Product_Description,
+                    product_Price = p.Product_Price,
+                    category = new
+                    {
+                        category_ID = p.Categories.Category_ID,
+                        category_Name = p.Categories.Category_Name
+                    }
+                });
+
+                return Ok(productsResponse);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         //----------------------------------------------------------------------
         // GET: api/products/{id}
         /// <summary>
@@ -71,43 +88,32 @@ namespace E_CommerceAPP.Controllers
         /// <summary>
         /// Creates a new product.
         /// </summary>
-        
+
         /// <response code="201">Returns the newly created product</response>
         /// <response code="400">If the request body is invalid</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Products>> PostProduct(AddProductDTOwithcategory productDto)
+        public async Task<ActionResult<Products>> PostProduct(ProductDTO productDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            // Retrieve the associated category from the database
-            var category = await productsdbcontext.Categories.FindAsync(productDto.category_ID);
+            var category = await productsdbcontext.Categories.FindAsync(productDto.Category_ID);
 
             if (category == null)
             {
-                return BadRequest("Invalid Category ID");
+                return NotFound(new { message = "Category not found" });
             }
 
-            // Map the DTO to the entity
             var product = new Products
             {
-                Product_Name = productDto.product_Name,
-                Product_Description = productDto.product_Description,
-                Product_Price = productDto.product_Price,
-                Category_ID = productDto.category_ID,
-                Categories = category // Associate the product with the category
+                Product_Name = productDto.Product_Name,
+                Product_Description = productDto.Product_Description,
+                Product_Price = productDto.Product_Price,
+                Category_ID = productDto.Category_ID,
+                Categories = category
             };
 
-            // Add the product to the context and save changes
             productsdbcontext.Products.Add(product);
             await productsdbcontext.SaveChangesAsync();
 
-            // Return the created product
-            return CreatedAtAction("GetProduct", new { id = product.Product_ID }, product);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Product_ID }, product);
         }
         //--------------------------------------------------
         // PUT: api/products/{id}
@@ -115,8 +121,8 @@ namespace E_CommerceAPP.Controllers
         /// Updates an existing product identified by ID.
         /// </summary>
         /// <param name="id">The ID of the product to update</param>
-        
-       
+
+
         /// <response code="200">Returns the updated product</response>
         /// <response code="400">If the request body or ID is invalid</response>
         /// <response code="404">If no product with the specified ID exists</response>
