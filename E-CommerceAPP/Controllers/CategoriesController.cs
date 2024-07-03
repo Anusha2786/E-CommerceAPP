@@ -83,6 +83,7 @@ namespace E_CommerceAPP.Controllers
                     {
                         Product_ID = p.Product_ID,
                         Product_Name = p.Product_Name,
+
                         Product_Description = p.Product_Description,
                         Product_Price = p.Product_Price
                     }).ToList()
